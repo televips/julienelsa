@@ -791,6 +791,61 @@
 
         const pixController = new PixPaymentController();
     </script>
+
+      <script>
+(function stickyHeaderUniversal(){
+  const header =
+    document.querySelector('header') ||
+    document.querySelector('.navbar') ||
+    document.querySelector('#header');
+
+  if (!header) return;
+
+  const OFFSET = header.offsetTop;
+
+  // injeta CSS mínimo (isolado)
+  const css = `
+    .__sticky-fixed{
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1030;
+      animation: stickyFade .0s ease; 
+    }
+    @keyframes stickyFade{
+      from{ transform: translateY(-100%); }
+      to{ transform: translateY(0); }
+    }
+  `;
+  const style = document.createElement("style");
+  style.textContent = css;
+  document.head.appendChild(style);
+
+  // placeholder pra não dar pulo no layout
+  const spacer = document.createElement("div");
+  spacer.style.height = header.offsetHeight + "px";
+  spacer.style.display = "none";
+  header.after(spacer);
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > OFFSET) {
+      if (!header.classList.contains("__sticky-fixed")) {
+        header.classList.add("__sticky-fixed");
+        spacer.style.display = "block";
+      }
+    } else {
+      header.classList.remove("__sticky-fixed");
+      spacer.style.display = "none";
+    }
+  });
+})();
+</script>
+
+
+</body>
+
+</html>
 </body>
 
 </html>
